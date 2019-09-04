@@ -100,7 +100,7 @@ namespace Test.Domain
                 //e.Property(x => x.Id).ValueGeneratedOnAdd().UseMySqlIdentityColumn();//MySqlSetIncrement(Verify)
                 e.Property(x => x.Id).ValueGeneratedOnAdd().UseNpgsqlIdentityAlwaysColumn();
 
-                e.Property(x=>x.Title).HasColumnType("varchar").HasMaxLength(256);
+                //e.Property(x=>x.Title).HasColumnType("varchar").HasMaxLength(256);
 
                 e.Property(x => x.Timestamp).IsRowVersion().IsConcurrencyToken();             
             });
@@ -113,8 +113,8 @@ namespace Test.Domain
                 e.Property(x => x.Id).ValueGeneratedOnAdd().UseNpgsqlIdentityAlwaysColumn();//PostgreSqlSetIncrement(Verify)  
                 e.Property(x => x.Timestamp).HasColumnName("xmin").HasColumnType("xid").HasConversion(converter).IsRequired().IsRowVersion().IsConcurrencyToken().ValueGeneratedOnAddOrUpdate(); //ConcurrencyClick(Verify) 
 
-                e.Property(x=>x.Name).HasMaxLength(512); 
-                e.Property(x=>x.EditerName).HasMaxLength(512);
+                //e.Property(x=>x.Name).HasMaxLength(512); 
+                //e.Property(x=>x.EditerName).HasMaxLength(512);
 
                 e.HasMany(x => x.Articles).WithOne(y => y.ArticleType).HasForeignKey(y => y.TypeId);
             });
