@@ -66,5 +66,16 @@ namespace Test.Core.Map
             }
             return list;
         }
+
+        public List<string> DictionaryToStringList(IDictionary<string, string> dict)
+        {
+            var list = new List<string>();
+            foreach (var item in dict)
+            {
+                var str = item.Key + "=" + item.Value;
+                list.Add(str);
+            }
+            return list;
+        }
     }
 }

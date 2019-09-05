@@ -11,5 +11,7 @@ namespace Test.Core.Map
         IDictionary<string, string> DynamicToDictionary(dynamic obj);
 
         List<string> DynamicToStringList(dynamic obj);
+
+        List<string> DictionaryToStringList(IDictionary<string, string> dict);
     }
 }
