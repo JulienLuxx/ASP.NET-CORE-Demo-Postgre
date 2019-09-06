@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Test.Core;
 using Test.Domain;
 using Test.Domain.Entity;
 using Test.Domain.Extend;
@@ -17,7 +18,6 @@ using Test.Service.Impl;
 using Test.Service.Infrastructure;
 using Test.Service.Interface;
 using Test.Service.QueryModel;
-using Test.XUnitTest.Infrastructure;
 using Xunit;
 
 namespace Test.XUnitTest
