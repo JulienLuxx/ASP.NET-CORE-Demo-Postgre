@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Test.Core.Encrypt
 {
-    public class EncryptUtil: IEncryptUtil
+    public class EncryptUtil : IEncryptUtil
     {
         #region Md5
 

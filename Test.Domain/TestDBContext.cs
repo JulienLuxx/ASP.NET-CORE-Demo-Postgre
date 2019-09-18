@@ -102,7 +102,9 @@ namespace Test.Domain
 
                 //e.Property(x=>x.Title).HasColumnType("varchar").HasMaxLength(256);
 
-                e.Property(x => x.Timestamp).IsRowVersion().IsConcurrencyToken();             
+                e.Property(x => x.Timestamp).IsRowVersion().IsConcurrencyToken();       
+                
+
             });
 
             modelBuilder.Entity<ArticleType>(e =>
@@ -115,8 +117,10 @@ namespace Test.Domain
 
                 //e.Property(x=>x.Name).HasMaxLength(512); 
                 //e.Property(x=>x.EditerName).HasMaxLength(512);
+                e.Property(x => x.Name).ForNpgsqlHasComment("名称");
 
                 e.HasMany(x => x.Articles).WithOne(y => y.ArticleType).HasForeignKey(y => y.TypeId);
+                
             });
 
 
@@ -154,7 +158,7 @@ namespace Test.Domain
             {
                 //e.ToTable("Log");
                 //e.HasKey(x => x.Id);
-                e.Property(x => x.Id).ValueGeneratedOnAdd().UseNpgsqlIdentityAlwaysColumn();
+                //e.Property(x => x.Id).ValueGeneratedOnAdd().UseNpgsqlIdentityAlwaysColumn();
                 //e.Property(x => x.Application).HasMaxLength(64);
                 //e.Property(x => x.Logged).HasMaxLength(128);
                 //e.Property(x => x.Level).HasMaxLength(64);

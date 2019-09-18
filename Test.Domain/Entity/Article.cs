@@ -33,6 +33,7 @@ namespace Test.Domain.Entity
         public string Content { get; set; }
 
         //[Required]
+        //[ForeignKey("")]
         public int TypeId { get; set; }
 
         public int Status { get; set; }

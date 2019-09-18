@@ -22,8 +22,8 @@ namespace Test.Core.Test
 
                 var typeArray = new Type[]
                 {
-                type,
-                propertyInfo.PropertyType
+                    type,
+                    propertyInfo.PropertyType
                 };
                 MethodCallExpression callExpression = Expression.Call(typeof(Queryable), methodName, typeArray, source.Expression, lambda);
 
