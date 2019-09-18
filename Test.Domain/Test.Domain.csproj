@@ -19,6 +19,7 @@
     <Compile Remove="ContextPool.cs" />
     <Compile Remove="DbCommandInterceptor.cs" />
     <Compile Remove="Infrastructure\IDependency.cs" />
+    <Compile Remove="MasterTestDbContext.cs" />
     <Compile Remove="Migrations\20180606093606_FirstMigration.cs" />
     <Compile Remove="Migrations\20180606093606_FirstMigration.Designer.cs" />
     <Compile Remove="Migrations\20180606145455_Migration2.cs" />
@@ -51,6 +52,7 @@
     <Compile Remove="Migrations\20190731072106_AddLog.Designer.cs" />
     <Compile Remove="Migrations\20190805014557_initdb.cs" />
     <Compile Remove="Migrations\20190805014557_initdb.Designer.cs" />
+    <Compile Remove="SlaveTestDBContext.cs" />
   </ItemGroup>
 
   <ItemGroup>
