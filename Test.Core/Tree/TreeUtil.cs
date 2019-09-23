@@ -12,6 +12,13 @@ namespace Test.Core.Tree
     /// </summary>
     public class TreeUtil: ITreeUtil
     {
+        private IMapper _mapper;
+
+        public TreeUtil(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+
         /// <summary>
         /// GetTreeForBaseDto
         /// </summary>
@@ -28,7 +35,7 @@ namespace Test.Core.Tree
                 {
                     return;
                 }
-                tree = Mapper.Map(dto, tree);
+                tree = _mapper.Map(dto, tree);
                 Func<T, bool> func = f => f.ParentId == dto.Id;
                 var childs = list.Where(func).ToList();
                 foreach (var child in childs)
