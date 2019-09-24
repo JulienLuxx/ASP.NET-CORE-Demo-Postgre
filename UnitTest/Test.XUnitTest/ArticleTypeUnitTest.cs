@@ -69,7 +69,7 @@ namespace Test.XUnitTest
         [Fact]
         public async Task GetSingleDataAsyncTest()
         {
-            Mapper.Initialize(x => x.AddProfile<CustomizeProfile>());
+            //Mapper.Initialize(x => x.AddProfile<CustomizeProfile>());
             var mockContext = new Mock<TestDBContext>();
             var mockSvc = new ArticleTypeSvc(mockContext.Object, new DbContextExtendSvc());
             var list = new List<ArticleType>()
@@ -89,7 +89,7 @@ namespace Test.XUnitTest
         [Fact]
         public void AddSingleTest()
         {
-            Mapper.Initialize(x => x.AddProfile<CustomizeProfile>());
+            //Mapper.Initialize(x => x.AddProfile<CustomizeProfile>());
             var mockSet = new Mock<DbSet<ArticleType>>();
             var mockContext = new Mock<TestDBContext>();
             mockContext.Setup(x => x.ArticleType).Returns(mockSet.Object);
@@ -108,7 +108,7 @@ namespace Test.XUnitTest
         [Fact]
         public void EditTest()
         {
-            Mapper.Initialize(x => x.AddProfile<CustomizeProfile>());
+            //Mapper.Initialize(x => x.AddProfile<CustomizeProfile>());
             var list = new List<ArticleType>()
             {
                 new ArticleType(){ Id=1,Name="1",EditerName="123",CreateTime=DateTime.Now},
@@ -226,7 +226,7 @@ namespace Test.XUnitTest
         [Fact]
         public void AddTest()
         {
-            Mapper.Initialize(x => x.AddProfile<CustomizeProfile>());
+            //Mapper.Initialize(x => x.AddProfile<CustomizeProfile>());
             var mockSet = Substitute.For<DbSet<ArticleType>>();
             var mockContext = Substitute.For<TestDBContext>();
             mockContext.ArticleType.Returns(mockSet);

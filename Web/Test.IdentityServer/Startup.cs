@@ -35,7 +35,7 @@ namespace Test.IdentityServer
 
             services.AddDbContext<TestDBContext>();
 
-            services.AddAutoMapper();
+            services.AddAutoMapper(typeof(CustomizeProfile));
 
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
@@ -65,7 +65,7 @@ namespace Test.IdentityServer
             app.UseStaticFiles();
             //app.UseMvcWithDefaultRoute();
 
-            Mapper.Initialize(x => x.AddProfile<CustomizeProfile>());
+            //Mapper.Initialize(x => x.AddProfile<CustomizeProfile>());
 
             //app.Run(async (context) =>
             //{

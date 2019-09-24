@@ -65,7 +65,7 @@ namespace Test.Service.Impl
             dto.CreateTime = DateTime.Now;
             try
             {
-                var data = Mapper.Map<ArticleType>(dto);
+                var data = _mapper.Map<ArticleType>(dto);
                 _testDB.ArticleType.Add(data);
                 var flag = await _testDB.SaveChangesAsync();
                 if (flag > 0)
@@ -85,7 +85,7 @@ namespace Test.Service.Impl
         {
             var data = new ArticleType();
             dto.CreateTime = DateTime.Now;
-            data = Mapper.Map<ArticleType>(dto);
+            data = _mapper.Map<ArticleType>(dto);
             _testDB.Add(data);
             var flag = _testDB.SaveChanges();
             return data;
@@ -154,7 +154,7 @@ namespace Test.Service.Impl
                     return result;
                 }
                 dto.IsDeleted = data.IsDeleted;
-                data = Mapper.Map(dto, data);
+                data = _mapper.Map(dto, data);
                 _testDB.Update(data);
                 var flag = _testDB.SaveChanges();
                 if (0 < flag)
@@ -182,7 +182,7 @@ namespace Test.Service.Impl
                     return result;
                 }
                 dto.IsDeleted = data.IsDeleted;
-                data = Mapper.Map(dto, data);
+                data = _mapper.Map(dto, data);
                 //_testDB.Update(data);
                 //await _testDB.Database.ExecuteSqlCommandAsync("")
                 var flag = await _dbContextExtendSvc.CommitTestAsync<TestDBContext, ArticleType>(_testDB, true);
@@ -247,7 +247,7 @@ namespace Test.Service.Impl
             var data = _testDB.ArticleType.AsNoTracking().Where(x => !x.IsDeleted && x.Id == id).FirstOrDefault();
             if (null != data)
             {
-                var dto = Mapper.Map<ArticleTypeDto>(data);
+                var dto = _mapper.Map<ArticleTypeDto>(data);
                 result.Data = dto;
                 result.ActionResult = true;
                 result.Message = "success";
@@ -261,7 +261,7 @@ namespace Test.Service.Impl
             var data =await  _testDB.ArticleType.AsNoTracking().Where(x => !x.IsDeleted && x.Id == id).FirstOrDefaultAsync();
             if (null != data)
             {
-                var dto = Mapper.Map<ArticleTypeDto>(data);
+                var dto = _mapper.Map<ArticleTypeDto>(data);
                 result.Data = dto;
                 result.ActionResult = true;
                 result.Message = "success";

@@ -27,6 +27,7 @@ namespace Test.Service.Impl
         /// <param name="mapper"></param>
         /// <param name="testDB"></param>
         /// <param name="util"></param>
+        /// <param name="commentSvc"></param>
         public ArticleSvc(
             IMapper mapper,
             TestDBContext testDB, 
@@ -196,7 +197,7 @@ namespace Test.Service.Impl
             {
                 return;
             }
-            tree = Mapper.Map(dto,tree);
+            tree = _mapper.Map(dto,tree);
             var childs = list.Where(x => x.ParentId == dto.Id).ToList();
             foreach (var child in childs)
             {
