@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Test.Service.Impl
 {
     public class LogSvc : BaseSvc, ILogSvc
     {
-        public LogSvc(TestDBContext testDB) : base(testDB)
+        public LogSvc(IMapper mapper, TestDBContext testDB) : base(mapper, testDB)
         {
         }
 

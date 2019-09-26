@@ -19,6 +19,8 @@ namespace Test.Service.Impl
     {
         private IMapper _mapper { get; set; }
         private IDbContextExtendSvc _dbContextExtendSvc { get; set; }
+
+        [Obsolete]
         public ArticleTypeSvc(
             TestDBContext testDB,
             IDbContextExtendSvc dbContextExtendSvc

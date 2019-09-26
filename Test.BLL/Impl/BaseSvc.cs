@@ -26,6 +26,7 @@ namespace Test.Service.Impl
             _testDB = testDB ?? throw new ArgumentNullException(nameof(testDB));
         }
 
+        [Obsolete]
         protected BaseSvc(TestDBContext testDB)
         {
             //_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
