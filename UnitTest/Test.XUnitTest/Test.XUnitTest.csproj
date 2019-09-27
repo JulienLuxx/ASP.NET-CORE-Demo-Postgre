@@ -29,7 +29,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Test.BLL\Test.Service.csproj" />
-    <ProjectReference Include="..\..\Test.Domain\Test.Domain.csproj" />
   </ItemGroup>
 
 </Project>
