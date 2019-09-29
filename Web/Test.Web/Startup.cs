@@ -64,6 +64,8 @@ namespace Test.Web
 
             services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
 
+            services.AddHttpClient();
+
             //注册AutoMapper
             //services.AddAutoMapper();
             services.AddAutoMapper(typeof(CustomizeProfile));

@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
+using Newtonsoft.Json;
+using Test.Core.Map;
 using Test.Service.Interface;
 using Test.Service.QueryModel;
 using Test.Web.Base;
@@ -18,9 +23,16 @@ namespace Test.Web.API
     public class TestController : BaseController
     {
         private readonly ICommentSvc _commentSvc;
-        public TestController(ICommentSvc commentSvc)
+
+        private IHttpClientFactory _clientFactory { get; set; }
+
+        private IMapUtil _mapUtil { get; set; }
+
+        public TestController(ICommentSvc commentSvc,IHttpClientFactory clientFactory,IMapUtil mapUtil)
         {
             _commentSvc = commentSvc;
+            _clientFactory = clientFactory;
+            _mapUtil = mapUtil;
         }
 
         [HttpGet("Page")]
@@ -46,6 +58,43 @@ namespace Test.Web.API
         {
             throw new Exception("Error!");
             return Json(new { value1 = "", value2 = "" });
+        }
+
+        [AllowAnonymous]
+        [HttpGet("HttpClientDownloadTestAsync")]
+        public async Task<dynamic> HttpClientDownloadTestAsync()
+        {
+            var urlStr = @"http://localhost:54238/API/ArticleType/Page";
+            var httpMethod = new HttpMethod("GET");
+            var param = new ArticleTypeQueryModel() { PageSize = 1 };
+            var paramDict = _mapUtil.DynamicToDictionary(param);
+            var url = QueryHelpers.AddQueryString(urlStr, paramDict);
+            var request = new HttpRequestMessage(httpMethod, url);
+            var client = _clientFactory.CreateClient();
+            var response = await client.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                var stream = await response.Content.ReadAsStreamAsync();
+                using (stream)
+                {
+                    if (stream.Length > 0)
+                    {
+                        //var fileStream = new FileStream(@"D:/ProjecDoc/result.json", FileMode.Create);
+                        //await stream.CopyToAsync(fileStream);
+                        //fileStream.Close();
+
+                        var memoryStream = new MemoryStream();
+                        await stream.CopyToAsync(memoryStream);
+                        
+                    }
+
+                    throw new NullReferenceException();
+                }
+            }
+            else
+            {
+                return response.StatusCode;
+            }
         }
     }
 }
