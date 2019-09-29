@@ -75,19 +75,22 @@ namespace Test.Web.API
             if (response.IsSuccessStatusCode)
             {
                 var stream = await response.Content.ReadAsStreamAsync();
-                using (stream)
+                var memoryStream = new MemoryStream();
+                if (stream.Length > 0)
                 {
-                    if (stream.Length > 0)
+                    using (stream)
                     {
                         //var fileStream = new FileStream(@"D:/ProjecDoc/result.json", FileMode.Create);
                         //await stream.CopyToAsync(fileStream);
                         //fileStream.Close();
-
-                        var memoryStream = new MemoryStream();
                         await stream.CopyToAsync(memoryStream);
-                        
                     }
-
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+                    Response.Headers.Add("Content-Disposition", "attachment; filename=result.json");
+                    return new FileStreamResult(memoryStream, "text/plain; charset=utf-8");
+                }
+                else
+                {
                     throw new NullReferenceException();
                 }
             }
