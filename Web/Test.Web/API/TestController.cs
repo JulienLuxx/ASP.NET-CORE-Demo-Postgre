@@ -91,7 +91,7 @@ namespace Test.Web.API
                 }
                 else
                 {
-                    throw new NullReferenceException();
+                    throw new NotImplementedException();
                 }
             }
             else

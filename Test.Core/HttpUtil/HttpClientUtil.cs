@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -12,9 +13,27 @@ namespace Test.Core.HttpUtl
 {
     public class HttpResult
     {
+        public HttpResult(string result, List<string> cookies, bool isSuccess)
+        {
+            Result = result;
+            Cookies = cookies;
+            IsSuccess = isSuccess;
+        }
         public List<string> Cookies { get; set; }
 
         public string Result { get; set; }
+
+        public bool IsSuccess { get; set; }
+    }
+
+    public class HttpFileResult : HttpResult
+    {
+        public HttpFileResult(string result, List<string> cookies, bool isSuccess, MemoryStream stream) : base(result, cookies, isSuccess)
+        {
+            Stream = stream;
+        }
+
+        public MemoryStream Stream { get; set; }
     }
 
     public class HttpClientUtil : IHttpClientUtil 
@@ -87,16 +106,70 @@ namespace Test.Core.HttpUtl
                 var cookieFlag = response.Headers.TryGetValues("Set-Cookie", out var setCookies);
                 if (cookieFlag)
                 {
-                    return new HttpResult { Result = result, Cookies = setCookies.ToList() };
+                    return new HttpResult(result, setCookies.ToList(), true);
                 }
                 else
                 {
-                    return new HttpResult { Result = result, Cookies = new List<string>() };
+                    return new HttpResult(result, new List<string>(), true);
                 }
             }
             else
             {
-                return null;
+                return new HttpResult(response.StatusCode.ToString(), new List<string>(), false);
+            }
+        }
+
+        public async Task<HttpResult> GetFileStreamAsync(dynamic param, string url, string httpMethodStr, MediaTypeEnum mediaType,string userAgent=null) 
+        {
+            httpMethodStr = httpMethodStr.ToUpper();
+            var httpMethod = new HttpMethod(httpMethodStr);
+            var paramDict = _mapUtil.DynamicToDictionary(param);
+            var request = new HttpRequestMessage(httpMethod, url);
+            if (HttpMethod.Get.Equals(httpMethod))
+            {
+                switch (mediaType)
+                {
+                    case MediaTypeEnum.UrlQuery:
+                        url = QueryHelpers.AddQueryString(url, paramDict);
+                        request.RequestUri = new Uri(url);
+                        break;
+                    case MediaTypeEnum.ApplicationFormUrlencoded:
+                        request.Content = new FormUrlEncodedContent(paramDict);
+                        break;
+                }
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+            if (!string.IsNullOrEmpty(userAgent) && !string.IsNullOrWhiteSpace(userAgent))
+            {
+                request.Headers.UserAgent.ParseAdd(userAgent);
+            }
+            var client = _clientFactory.CreateClient();
+            var response = await client.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                var httpStream = await response.Content.ReadAsStreamAsync();
+                var memoryStream = new MemoryStream();
+                if (httpStream.Length > 0)
+                {
+                    using (httpStream)
+                    {
+                        await httpStream.CopyToAsync(memoryStream);
+                    }
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+                    return new HttpFileResult(string.Empty, new List<string>(), true, memoryStream);
+                }
+                else
+                {
+                    return new HttpFileResult(string.Empty, new List<string>(), false, null);
+                }
+
+            }
+            else
+            {
+                return new HttpResult(response.StatusCode.ToString(), new List<string>(), false);
             }
         }
     }
