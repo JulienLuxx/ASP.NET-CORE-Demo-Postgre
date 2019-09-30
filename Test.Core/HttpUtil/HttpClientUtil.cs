@@ -119,7 +119,7 @@ namespace Test.Core.HttpUtl
             }
         }
 
-        public async Task<HttpResult> GetFileStreamAsync(dynamic param, string url, string httpMethodStr, MediaTypeEnum mediaType,string userAgent=null) 
+        public async Task<HttpFileResult> GetFileStreamAsync(dynamic param, string url, string httpMethodStr, MediaTypeEnum mediaType,string userAgent=null) 
         {
             httpMethodStr = httpMethodStr.ToUpper();
             var httpMethod = new HttpMethod(httpMethodStr);
@@ -169,7 +169,7 @@ namespace Test.Core.HttpUtl
             }
             else
             {
-                return new HttpResult(response.StatusCode.ToString(), new List<string>(), false);
+                return new HttpFileResult(response.StatusCode.ToString(), new List<string>(), false, null);
             }
         }
     }

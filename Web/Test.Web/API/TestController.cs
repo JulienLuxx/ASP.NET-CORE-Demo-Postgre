@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
+using Test.Core.HttpUtl;
 using Test.Core.Map;
 using Test.Service.Interface;
 using Test.Service.QueryModel;
@@ -26,13 +27,16 @@ namespace Test.Web.API
 
         private IHttpClientFactory _clientFactory { get; set; }
 
+        private IHttpClientUtil _httpClientUtil { get; set; }
+
         private IMapUtil _mapUtil { get; set; }
 
-        public TestController(ICommentSvc commentSvc,IHttpClientFactory clientFactory,IMapUtil mapUtil)
+        public TestController(ICommentSvc commentSvc, IHttpClientFactory clientFactory, IMapUtil mapUtil, IHttpClientUtil httpClientUtil) 
         {
             _commentSvc = commentSvc;
             _clientFactory = clientFactory;
             _mapUtil = mapUtil;
+            _httpClientUtil = httpClientUtil;
         }
 
         [HttpGet("Page")]
@@ -61,7 +65,7 @@ namespace Test.Web.API
         }
 
         [AllowAnonymous]
-        [HttpGet("HttpClientDownloadTestAsync")]
+        [HttpGet("HttpClientDownloadTest")]
         public async Task<dynamic> HttpClientDownloadTestAsync()
         {
             var urlStr = @"http://localhost:54238/API/ArticleType/Page";
@@ -97,6 +101,24 @@ namespace Test.Web.API
             else
             {
                 return response.StatusCode;
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("HttpClientDownloadTest2")]
+        public async Task<IActionResult> HttpClientDownloadTest2Async()
+        {
+            var urlStr = @"http://localhost:54238/API/ArticleType/Page";
+            var param = new ArticleTypeQueryModel() { PageSize = 1 };
+            var httpFileResult = await _httpClientUtil.GetFileStreamAsync(param, urlStr, "get", MediaTypeEnum.UrlQuery);
+            if (httpFileResult.IsSuccess)
+            {
+                Response.Headers.Add("Content-Disposition", "attachment; filename=result.json");
+                return new FileStreamResult(httpFileResult.Stream, "text/plain; charset=utf-8");
+            }
+            else
+            {
+                return Json(httpFileResult);
             }
         }
     }
