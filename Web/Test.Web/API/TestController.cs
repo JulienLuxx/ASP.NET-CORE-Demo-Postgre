@@ -121,5 +121,38 @@ namespace Test.Web.API
                 return Json(httpFileResult);
             }
         }
+
+        [AllowAnonymous]
+        [HttpGet("HttpClientDownloadTest3")]
+        public async Task<IActionResult> HttpClientDownloadTest3Async()
+        {
+            var urlStr = @"http://localhost:54238/API/Log/Page";
+            var param = new LogQueryModel() { PageSize = 100 };
+            var httpFileResult = await _httpClientUtil.GetFileStreamAsync(param, urlStr, "get", MediaTypeEnum.UrlQuery);
+            if (httpFileResult.IsSuccess)
+            {
+                //Response.Headers.Add("Content-Disposition", "attachment; filename=result.json");
+
+                if (httpFileResult.Stream.Length > 0)
+                {
+                    using (httpFileResult.Stream)
+                    {
+                        var fileStream = new FileStream(@"D:/ProjecDoc/result.json", FileMode.Create);
+                        await httpFileResult.Stream.CopyToAsync(fileStream);
+                        fileStream.Close();
+                        return Json(httpFileResult.IsSuccess);
+                    }
+                }
+                else
+                {
+                    return Json(httpFileResult);
+                }
+                //return new FileStreamResult(httpFileResult.Stream, "text/plain; charset=utf-8");
+            }
+            else
+            {
+                return Json(httpFileResult);
+            }
+        }
     }
 }
