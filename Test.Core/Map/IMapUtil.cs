@@ -10,6 +10,8 @@ namespace Test.Core.Map
 
         IDictionary<string, string> DynamicToDictionary(dynamic obj);
 
+        IDictionary<string, string> EntityToDictionary<T>(T obj) where T : class;
+
         List<string> DynamicToStringList(dynamic obj);
 
         List<string> DictionaryToStringList(IDictionary<string, string> dict);

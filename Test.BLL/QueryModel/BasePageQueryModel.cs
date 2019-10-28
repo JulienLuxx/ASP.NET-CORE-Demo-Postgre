@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Test.Service.QueryModel
@@ -12,8 +13,11 @@ namespace Test.Service.QueryModel
             PageSize = PageSize == 0 ? 20 : PageSize;
             IsDesc = true;
         }
+
+        [Description("pageIndex")]
         public int PageIndex { get; set; }
 
+        [Description("pageSize")]
         public int PageSize { get; set; }
 
         public int TotalCount { get; set; }
