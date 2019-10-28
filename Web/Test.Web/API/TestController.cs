@@ -64,6 +64,8 @@ namespace Test.Web.API
             return Json(new { value1 = "", value2 = "" });
         }
 
+        
+
         [AllowAnonymous]
         [HttpGet("HttpClientDownloadTest")]
         public async Task<dynamic> HttpClientDownloadTestAsync()

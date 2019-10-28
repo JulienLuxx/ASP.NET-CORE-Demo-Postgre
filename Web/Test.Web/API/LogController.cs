@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Test.Service.Interface;
 using Test.Service.QueryModel;
 
@@ -19,10 +20,11 @@ namespace Test.Web.API
         }
 
         [HttpGet("Page")]
-        public async Task<JsonResult> GetPageAsync(LogQueryModel qModel)
+        public async Task<IActionResult> GetPageAsync(LogQueryModel qModel)
         {
-            var resultTask = _logSvc.GetPageDataAsync(qModel);
-            return Json(await resultTask);
+            var result= await _logSvc.GetPageDataAsync(qModel);
+            var json = JsonConvert.SerializeObject(result);
+            return Json(result);
         }
     }
 }
