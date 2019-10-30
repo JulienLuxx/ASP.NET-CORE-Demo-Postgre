@@ -70,40 +70,44 @@ namespace Test.Web.API
         [HttpGet("HttpClientDownloadTest")]
         public async Task<dynamic> HttpClientDownloadTestAsync()
         {
-            var urlStr = @"http://localhost:54238/API/ArticleType/Page";
+            var urlStr = @"http://localhost:54238/API/Log/Page";
+            var param = new LogQueryModel() { PageSize = 100 };
             var httpMethod = new HttpMethod("GET");
-            var param = new ArticleTypeQueryModel() { PageSize = 1 };
             var paramDict = _mapUtil.DynamicToDictionary(param);
             var url = QueryHelpers.AddQueryString(urlStr, paramDict);
             var request = new HttpRequestMessage(httpMethod, url);
             var client = _clientFactory.CreateClient();
-            var response = await client.SendAsync(request);
-            if (response.IsSuccessStatusCode)
+            using (client)
             {
-                var stream = await response.Content.ReadAsStreamAsync();
-                var memoryStream = new MemoryStream();
-                if (stream.Length > 0)
+                var response = await client.SendAsync(request);
+                if (response.IsSuccessStatusCode)
                 {
-                    using (stream)
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    var memoryStream = new MemoryStream();
+                    if (stream.Length > 0)
                     {
-                        //var fileStream = new FileStream(@"D:/ProjecDoc/result.json", FileMode.Create);
-                        //await stream.CopyToAsync(fileStream);
-                        //fileStream.Close();
-                        await stream.CopyToAsync(memoryStream);
+                        using (stream)
+                        {
+                            //var fileStream = new FileStream(@"D:/ProjecDoc/result.json", FileMode.Create);
+                            //await stream.CopyToAsync(fileStream);
+                            //fileStream.Close();
+                            await stream.CopyToAsync(memoryStream);
+                        }
+                        memoryStream.Seek(0, SeekOrigin.Begin);
+                        Response.Headers.Add("Content-Disposition", "attachment; filename=result.json");
+                        return new FileStreamResult(memoryStream, "text/plain; charset=utf-8");
                     }
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-                    Response.Headers.Add("Content-Disposition", "attachment; filename=result.json");
-                    return new FileStreamResult(memoryStream, "text/plain; charset=utf-8");
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    return response.StatusCode;
                 }
             }
-            else
-            {
-                return response.StatusCode;
-            }
+
         }
 
         [AllowAnonymous]
