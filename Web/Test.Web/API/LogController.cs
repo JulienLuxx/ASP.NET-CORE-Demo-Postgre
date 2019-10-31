@@ -21,7 +21,7 @@ namespace Test.Web.API
 
         [HttpGet("Page")]
         public async Task<IActionResult> GetPageAsync(LogQueryModel qModel)
-        {
+        {            
             var result= await _logSvc.GetPageDataAsync(qModel);
             var json = JsonConvert.SerializeObject(result);
             return Json(result);
