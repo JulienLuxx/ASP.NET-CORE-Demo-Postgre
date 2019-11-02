@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,7 @@ namespace Test.Web.API
 
         private IMapUtil _mapUtil { get; set; }
 
-        public TestController(ICommentSvc commentSvc, IHttpClientFactory clientFactory, IMapUtil mapUtil, IHttpClientUtil httpClientUtil) 
+        public TestController(ICommentSvc commentSvc, IHttpClientFactory clientFactory, IMapUtil mapUtil, IHttpClientUtil httpClientUtil)
         {
             _commentSvc = commentSvc;
             _clientFactory = clientFactory;
@@ -42,7 +43,7 @@ namespace Test.Web.API
         [HttpGet("Page")]
         public async Task<JsonResult> GetPageAsync(CommentQueryModel qModel)
         {
-            var id=UserId;
+            var id = UserId;
             var name = UserName;
 
             var res = await _commentSvc.GetPageDataAsync(qModel);
@@ -64,7 +65,15 @@ namespace Test.Web.API
             return Json(new { value1 = "", value2 = "" });
         }
 
-        
+        [AllowAnonymous]
+        [HttpGet("HttpClientUtilTest")]
+        public async Task<dynamic> HttpClientUtilTestAsync()
+        {
+            var urlStr = @"http://localhost:54238/API/Log/Page";
+            var param = new LogQueryModel() { PageSize = 1000 };
+            var httpResult = await _httpClientUtil.SendAsync(param, urlStr, "get", MediaTypeEnum.UrlQuery);
+            return httpResult;
+        }
 
         [AllowAnonymous]
         [HttpGet("HttpClientDownloadTest")]
@@ -133,7 +142,7 @@ namespace Test.Web.API
         public async Task<IActionResult> HttpClientDownloadTest3Async()
         {
             var urlStr = @"http://localhost:54238/API/Log/Page";
-            var param = new LogQueryModel() { PageSize = 100 };
+            var param = new LogQueryModel() { PageSize = 1000 };
             var httpFileResult = await _httpClientUtil.GetFileStreamAsync(param, urlStr, "get", MediaTypeEnum.UrlQuery);
             if (httpFileResult.IsSuccess)
             {
