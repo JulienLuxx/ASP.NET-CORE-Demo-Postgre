@@ -224,7 +224,7 @@ namespace Test.Web
             //    .AddNLog()
             //    .AddDebug();
 
-            env.ConfigureNLog(Path.Combine(env.ContentRootPath, "nlog.config"));
+            //env.ConfigureNLog(Path.Combine(env.ContentRootPath, "nlog.config"));
 
             //TryUserMiddlewareHandlerLog
             app.UseMiddleware<ExceptionMiddleware>();
