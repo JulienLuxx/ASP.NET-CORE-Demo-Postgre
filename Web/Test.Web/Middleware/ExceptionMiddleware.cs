@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http.Internal;
 using System.Text;
+using System.IO;
 
 namespace Test.Web.Middleware
 {
@@ -54,21 +55,25 @@ namespace Test.Web.Middleware
                 if (context.Request.HasFormContentType)
                 {
                     var form = context.Request.Form;
-                    param = form.ToDictionary(x => x.Key, y => y.Value.FirstOrDefault());
+                    param = form.ToDictionary(x => x.Key, y => JsonConvert.SerializeObject(y.Value));
                 }
                 else if (context.Request.ContentLength > 0)
                 {
-                    var bytes = new byte[context.Request.Body.Length];
-                    context.Request.EnableRewind();
-                    context.Request.Body.Seek(0, 0);
-                    await context.Request.Body.ReadAsync(bytes, 0, bytes.Length);
-                    var jsonParam = Encoding.UTF8.GetString(bytes);
-                    param = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonParam);
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        using (context.Request.Body)
+                        {
+                            await context.Request.Body.CopyToAsync(memoryStream);
+                        }
+                        var byteArray = memoryStream.GetBuffer();
+                        var jsonParam = Encoding.UTF8.GetString(byteArray);
+                        param = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonParam);
+                    }
                 }
             }
             if (context.Request.QueryString.HasValue)
             {
-                param = context.Request.Query.ToDictionary(x => x.Key, y => y.Value.FirstOrDefault());
+                param = context.Request.Query.ToDictionary(x => x.Key, y => JsonConvert.SerializeObject(y.Value));
             }
             info = JsonConvert.SerializeObject(new { Id = guid, ClientAddress = context.Connection.RemoteIpAddress.ToString() + ":" + context.Connection.RemotePort.ToString(), RequestUrl = context.Request.Host + context.Request.Path, Param = param });            
             _logger.LogInformation(info);
