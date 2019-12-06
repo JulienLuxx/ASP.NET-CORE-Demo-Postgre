@@ -12,6 +12,7 @@ using Test.Domain.Extend;
 using Test.Service.Dto;
 using Test.Service.Interface;
 using Test.Service.QueryModel;
+using Test.Core.Test;
 
 namespace Test.Service.Impl
 {
@@ -241,6 +242,18 @@ namespace Test.Service.Impl
             result.Message = "Success";
             result.List = await queryData.ToListAsync();
             return result;
+        }
+
+        public async Task<List<ArticleTypeDto>> GetPageDatasAsync(ArticleTypeQueryModel param)
+        {
+            using (_testDB)
+            {
+                var query = _testDB.ArticleType.AsNoTracking().Where(x => !x.IsDeleted);
+                var queryData = query.Select(s => _mapper.Map<ArticleTypeDto>(s));
+                queryData = queryData.OrderBy(param.OrderByColumn, true);
+                queryData = queryData.Skip((param.PageIndex - 1) * param.PageSize).Take(param.PageSize);
+                return await queryData.ToListAsync();
+            }
         }
 
         public ResultDto<ArticleTypeDto> GetSingleData(int id)

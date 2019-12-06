@@ -9,7 +9,7 @@ namespace Test.Core.Test
 {
     public static class QueryHelper
     {
-        public static IQueryable<TSource> OrderBy<TSource>(this IQueryable<TSource> source, string columnName, bool isDesc) where TSource : class
+        public static IQueryable<TSource> OrderBy<TSource>(this IQueryable<TSource> source, string columnName, bool isDesc=false) where TSource : class
         {
             try
             {
