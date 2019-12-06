@@ -122,6 +122,13 @@ namespace Test.Service.Impl
             return treeList;
         }
 
+        public List<CommentTreeDto> GetCommentTreeList(List<CommentDto> dtoList)
+        {
+            var treeList = new List<CommentTreeDto>();
+            _util.GetDtoTrees(dtoList, ref treeList);
+            return treeList;
+        }
+
         public async Task<ResultDto<CommentDto>> GetPageDataAsync(CommentQueryModel qModel)
         {
             var result = new ResultDto<CommentDto>();
@@ -151,7 +158,8 @@ namespace Test.Service.Impl
             if (dataList.Where(x => x.Id == id).Any())
             {
                 var dtoList = _mapper.Map<List<CommentDto>>(dataList);
-                treeDtoList = GetCommentTrees(dtoList, id);
+                //treeDtoList = GetCommentTrees(dtoList, id);
+                treeDtoList = GetCommentTreeList(dtoList);
                 var data = dataList.Where(x => x.Id == id).FirstOrDefault();
                 if (null != data)
                 {
