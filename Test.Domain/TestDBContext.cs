@@ -37,7 +37,7 @@ namespace Test.Domain
         {
             if (null == _options)
             {
-                optionsBuilder.UseNpgsql(@"Host=47.244.228.240;Port=5233;Database=TestDB;Username=root;Password=2134006;");
+                optionsBuilder.UseNpgsql(@"Host=111.229.56.61;Port=5233;Database=TestDB;Username=root;Password=2121475;");
             }
             base.OnConfiguring(optionsBuilder);
             //UseLazyLoadProxies,ConfigureIgnoreDetachLazyLoadingWarning

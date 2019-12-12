@@ -14,7 +14,17 @@ namespace Test.Core
             return mockSet.SetupArray(list.ToArray());
         }
 
-        public static Mock<DbSet<T>> SetupArray<T>(this Mock<DbSet<T>> mockSet,params T[] array)where T : class
+        public static Mock<DbSet<T>> SetupSpan<T>(this Mock<DbSet<T>> mockSet, Span<T> span) where T : class
+        {
+            return mockSet.SetupArray(span.ToArray());
+        }
+
+        public static Mock<DbSet<T>> SetupMemory<T>(this Mock<DbSet<T>> mockSet, Memory<T> memory) where T : class
+        {
+            return mockSet.SetupArray(memory.ToArray());
+        }
+
+        public static Mock<DbSet<T>> SetupArray<T>(this Mock<DbSet<T>> mockSet, params T[] array) where T : class 
         {
             var queryable = array.AsQueryable();
             mockSet.As<IAsyncEnumerable<T>>().Setup(x => x.GetEnumerator()).Returns(new UnitTestAsyncEnumerator<T>(queryable.GetEnumerator()));

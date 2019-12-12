@@ -86,5 +86,12 @@ namespace Test.Core.Tree
                 throw ex;
             }
         }
+
+        public void GetDtoTrees<T, Ttree>(List<T> list, ref List<Ttree> treeList)
+            where T : BaseDto, ITreeDto, new()
+            where Ttree : BaseTreeDto<Ttree>, ITreeDto, new()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
