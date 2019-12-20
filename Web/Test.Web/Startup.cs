@@ -62,6 +62,8 @@ namespace Test.Web
             //services.AddDbContext<TestDBContext>();
             services.AddDbContext<TestDBContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
+            var t = Configuration.GetSection("ElasticSearchServerAddress").Value;
+
             services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
 
             services.AddHttpClient();
