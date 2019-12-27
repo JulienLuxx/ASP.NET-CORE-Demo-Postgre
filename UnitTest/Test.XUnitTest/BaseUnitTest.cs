@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -16,21 +17,35 @@ namespace Test.XUnitTest
 
         protected ServiceProvider _serviceProvider { get; set; }
 
+        protected IConfigurationRoot _configuration { get; set; }
+
         protected BaseUnitTest()
         {
             _serviceCollection = new ServiceCollection();
-            _serviceCollection.AddAutoMapper(typeof(CustomizeProfile));
-            _serviceCollection.AddAllSvc();
+            InitConfiguration();
+            Init();
         }
 
-        protected void AddDbContext()
+        protected virtual void AddDbContext()
         {
-            _serviceCollection.AddDbContext<TestDBContext>(options => options.UseNpgsql("Host=47.244.228.240;Port=5233;Database=TestDB;Username=root;Password=2134006;"));
+            _serviceCollection.AddDbContext<TestDBContext>(options => options.UseNpgsql(_configuration.GetConnectionString("DefaultConnection")));
         }
 
-        protected void BuilderServiceProvider()
+        protected virtual void BuilderServiceProvider()
         {
             _serviceProvider = _serviceCollection.BuildServiceProvider();
+        }
+
+        protected virtual void Init()
+        {
+            _serviceCollection.AddAutoMapper(typeof(CustomizeProfile));
+            _serviceCollection.AddAllSvc();
+            BuilderServiceProvider();
+        }
+
+        protected virtual void InitConfiguration()
+        {
+            _configuration = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).AddJsonFile("appsettings.json").Build();
         }
     }
 }
