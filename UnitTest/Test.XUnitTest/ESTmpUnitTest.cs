@@ -18,7 +18,7 @@ namespace Test.XUnitTest
 
         protected override void Init()
         {
-            _serviceCollection.Configure<ESConnectionStrings>(_configuration.GetSection("ElasticSearchNodes"));
+            _serviceCollection.Configure<ESConnectionStrings>(_configuration.GetSection("ElasticSearchAddress"));
             _serviceCollection.AddESSvc();
             base.Init();
             _esSvc = _serviceProvider.GetService<IESSvc>();

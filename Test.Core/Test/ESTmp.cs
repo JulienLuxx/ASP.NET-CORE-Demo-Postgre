@@ -6,7 +6,7 @@ namespace Test.Core
 {
     public class ESConnectionStrings
     {
-        public string ElasticSearchNodes { get; set; }
+        public string[] Nodes { get; set; }
     }
     public class ESHelper
     {
