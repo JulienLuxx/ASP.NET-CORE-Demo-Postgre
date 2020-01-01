@@ -40,7 +40,7 @@ namespace Test.Service.Dto
 
     //    public int? ArticleId { get; set; }
 
-    //    [IgnoreMap]
+    //[IgnoreMap]
     //    public List<CommentTreeDto> Childrens { get; set; }
     //}
 

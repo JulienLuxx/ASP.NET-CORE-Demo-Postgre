@@ -1,13 +1,14 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using Test.Core;
 using Test.Service;
 using Test.Service.IOC;
 using Xunit;
+using System;
 
 namespace Test.XUnitTest
 {
@@ -22,7 +23,16 @@ namespace Test.XUnitTest
             _serviceCollection.AddESSvc();
             base.Init();
             _esSvc = _serviceProvider.GetService<IESSvc>();
-            var s = _serviceProvider.GetService<IOptions<ESConnectionStrings>>();
+            var escon = _serviceProvider.GetService<IOptions<ESConnectionStrings>>();
+            if (null != escon.Value)
+            {
+                var uriList = new List<Uri>();
+                foreach (var node in escon.Value.Nodes)
+                {
+                    uriList.Add(new Uri(node));
+                }
+
+            }
         }
 
         [Fact]
