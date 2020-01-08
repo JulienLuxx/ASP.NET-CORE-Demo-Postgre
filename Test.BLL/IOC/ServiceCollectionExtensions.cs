@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Elasticsearch.Net;
+using Microsoft.Extensions.DependencyInjection;
+using Nest;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,6 +20,13 @@ namespace Test.Service.IOC
             services.AddUserSvc();
 
             services.AddESSvc();
+            return services;
+        }
+
+        public static IServiceCollection InitElasticClient(this IServiceCollection services)
+        {
+            services.AddSingleton<IConnectionPool, CustomizeConnectionPool>();
+            services.AddScoped<IElasticClient, CustomizeElasticClient>();
             return services;
         }
 
