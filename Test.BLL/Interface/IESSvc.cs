@@ -6,6 +6,5 @@ namespace Test.Service
 {
     public interface IESSvc
     {
-        void Test();
     }
 }
