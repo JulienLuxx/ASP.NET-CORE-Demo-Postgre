@@ -10,9 +10,9 @@ using Test.Core;
 
 namespace Test.Service
 {
-    public class CustomizeConnectionPool : StaticConnectionPool
+    public class CustomizeStaticConnectionPool : StaticConnectionPool
     {
-        public CustomizeConnectionPool(IOptions<ESConnectionStrings> options) : base(options.Value.Nodes.Select(x => new Uri(x)))
+        public CustomizeStaticConnectionPool(IOptions<ESConnectionStrings> options) : base(options.Value.Nodes.Select(x => new Uri(x)))
         { }
     }
 

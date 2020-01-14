@@ -25,7 +25,7 @@ namespace Test.Service.IOC
 
         public static IServiceCollection InitElasticClient(this IServiceCollection services)
         {
-            services.AddSingleton<IConnectionPool, CustomizeConnectionPool>();
+            services.AddSingleton<IConnectionPool, CustomizeStaticConnectionPool>();
             services.AddScoped<IElasticClient, CustomizeElasticClient>();
             return services;
         }
