@@ -87,6 +87,38 @@ namespace Test.Core.Tree
             }
         }
 
+        public void GetDtoTrees<T, Ttree>(List<T> list, List<int> rootIds, ref List<Ttree> treeList) where T : BaseDto, ITreeDto, new() where Ttree : BaseTreeDto<Ttree>, ITreeDto, new()
+        {
+            try
+            {
+                var dict = new Dictionary<int, Ttree>();
+                list.ForEach(f => dict.Add(f.Id, _mapper.Map<Ttree>(f)));
+                foreach (var rootId in rootIds)
+                {
+                    foreach (var item in dict.Values)
+                    {
+                        if (item.ParentId == rootId)
+                        {
+                            treeList.Add(item);
+                        }
+                        else
+                        {
+                            if (dict.ContainsKey(item.ParentId))
+                            {
+                                dict[item.ParentId].Childrens.Add(item);
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public void GetDtoTrees<T, Ttree>(List<T> list, ref List<Ttree> treeList)
             where T : BaseDto, ITreeDto, new()
             where Ttree : BaseTreeDto<Ttree>, ITreeDto, new()

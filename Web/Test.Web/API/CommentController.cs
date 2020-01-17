@@ -34,7 +34,7 @@ namespace Test.Web.API
             return Json(dto);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("Page")]
         public async Task<JsonResult> GetPageAsync(CommentQueryModel qModel)
         {

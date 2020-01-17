@@ -25,4 +25,13 @@ namespace Test.Service.IOC
             builder.RegisterType<LogSvc>().As<ILogSvc>().InstancePerLifetimeScope();
         }
     }
+
+    public partial class CustomizeModule : Module
+    {
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterType<LogSvc>().As<ILogSvc>().InstancePerLifetimeScope();
+            base.Load(builder);
+        }
+    }
 }

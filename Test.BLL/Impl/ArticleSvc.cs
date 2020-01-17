@@ -131,7 +131,7 @@ namespace Test.Service.Impl
             var query = _testDB.Article.AsNoTracking().Where(x => x.IsDeleted == false);
             query = qModel.Status.HasValue ? query.Where(x => x.Status == qModel.Status) : query;
             query = qModel.UserId.HasValue ? query.Where(x => x.UserId == qModel.UserId) : query;
-            query = string.IsNullOrEmpty(qModel.TypeName) ? query.Where(x => x.ArticleType.Name.Contains(qModel.TypeName)) : query;
+            query = !string.IsNullOrEmpty(qModel.TypeName) ? query.Where(x => x.ArticleType.Name.Contains(qModel.TypeName)) : query;
             var queryData = query.Select(x => new ArticleDto()
             {
                 Id = x.Id,
@@ -180,14 +180,19 @@ namespace Test.Service.Impl
         public List<CommentTreeDto> GetAllCommentByTree(List<CommentDto> dtoList)
         {
             var treeList = new List<CommentTreeDto>();
-            var rootList = dtoList.Where(x => x.ParentId == 0);
-            foreach (var item in rootList)
-            {
-                var tree = new CommentTreeDto();
-                //GetTree(item, tree, dtoList);
-                _util.GetDtoTree(item, tree, dtoList);
-                treeList.Add(tree);
-            }
+            //var rootIdList = dtoList.Where(x => x.ParentId == 0).Select(s => s.Id).ToList();
+            //foreach (var item in rootList)
+            //{
+            //    var tree = new CommentTreeDto();
+            //    //GetTree(item, tree, dtoList);
+            //    //_util.GetDtoTree(item, tree, dtoList);
+            //    //_util.GetDtoTrees(dtoList,)
+            //    treeList.Add(tree);
+            //}
+            //return treeList;
+
+            //_util.GetDtoTrees(dtoList, rootIdList, ref treeList);
+            _util.GetDtoTrees(dtoList, 0, ref treeList);
             return treeList;
         }
 

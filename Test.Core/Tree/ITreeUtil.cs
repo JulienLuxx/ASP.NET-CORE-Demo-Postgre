@@ -21,6 +21,10 @@ namespace Test.Core.Tree
         /// <param name="list"></param>
         void GetDtoTree<T, Ttree>(T dto, BaseTreeDto<Ttree> tree, List<T> list) where T : BaseDto, ITreeDto, new() where Ttree : BaseTreeDto<Ttree>, new();
 
+        void GetDtoTrees<T, Ttree>(List<T> list, int rootId, ref List<Ttree> treeList) where T : BaseDto, ITreeDto, new() where Ttree : BaseTreeDto<Ttree>, ITreeDto, new();
+
+        void GetDtoTrees<T, Ttree>(List<T> list, List<int> rootIds, ref List<Ttree> treeList) where T : BaseDto, ITreeDto, new() where Ttree : BaseTreeDto<Ttree>, ITreeDto, new();
+
         /// <summary>
         /// Util.GetTreeFromBaseDtoList
         /// </summary>

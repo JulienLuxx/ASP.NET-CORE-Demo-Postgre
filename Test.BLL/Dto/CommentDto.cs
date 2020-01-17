@@ -46,6 +46,8 @@ namespace Test.Service.Dto
 
     public class CommentTreeDto : BaseTreeDto<CommentTreeDto>, ITreeDto 
     {
+        public int Id { get; set; }
+
         public string Creator { get; set; }
 
         public string Content { get; set; }
