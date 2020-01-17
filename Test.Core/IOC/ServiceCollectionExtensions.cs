@@ -8,7 +8,7 @@ namespace Test.Core.IOC
 {
     public static class ServiceCollectionExtensions
     {
-        public static ServiceCollection AddEncryptUtil(this ServiceCollection services)
+        public static IServiceCollection AddEncryptUtil(this IServiceCollection services)
         {
             services.AddScoped<IEncryptUtil, EncryptUtil>();
             return services;

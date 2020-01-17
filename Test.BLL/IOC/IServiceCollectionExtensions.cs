@@ -9,7 +9,7 @@ using Test.Service.Interface;
 
 namespace Test.Service.IOC
 {
-    public static class ServiceCollectionExtensions
+    public static class IServiceCollectionExtensions
     {
         public static IServiceCollection AddAllSvc(this IServiceCollection services)
         {
