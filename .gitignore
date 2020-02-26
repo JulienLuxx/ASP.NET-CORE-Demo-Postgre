@@ -63,3 +63,4 @@
 /Web/Test.Web/obj
 /Web/Test.Web/internal-nlog.txt
 /UnitTest/Test.NUnitTest/obj
+/UnitTest/Test.NUnitTest/bin/Debug/netcoreapp3.1

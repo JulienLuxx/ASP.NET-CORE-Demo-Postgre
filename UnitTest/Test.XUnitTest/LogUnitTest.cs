@@ -19,6 +19,7 @@ namespace Test.XUnitTest
 
         [Fact]
         public void Test()
-        { }
+        { 
+        }
     }
 }
