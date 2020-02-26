@@ -62,3 +62,4 @@
 /Web/Test.IdentityServer/obj
 /Web/Test.Web/obj
 /Web/Test.Web/internal-nlog.txt
+/UnitTest/Test.NUnitTest/obj
