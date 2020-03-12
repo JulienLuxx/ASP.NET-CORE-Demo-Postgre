@@ -29,7 +29,7 @@ namespace Test.NUnitTest
                 IsDesc = false
             };
             var result = await _logSvc.GetPageDataAsync(param);
-            Assert.AreEqual(result.Data.Count, 20);
+            Assert.LessOrEqual(result.Data.Count, 20);
         }
     }
 }
