@@ -9,6 +9,7 @@ using Test.Service.QueryModel;
 
 namespace Test.NUnitTest
 {
+    [TestFixture]
     public class LogUnitTest : BaseUnitTest
     {
         private readonly ILogSvc _logSvc;
